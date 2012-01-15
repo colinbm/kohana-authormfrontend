@@ -26,7 +26,7 @@ class AuthOrmFrontend_Core_Controller_AuthOrmFrontend extends Controller_Templat
 
 	public function action_logout() {
 
-		$auth = Auth_ORM::instance();
+		$auth = Auth::instance();
 		$auth->logout(true, true);
 
 		$this->template->title = I18n::get('Logout');
@@ -38,13 +38,13 @@ class AuthOrmFrontend_Core_Controller_AuthOrmFrontend extends Controller_Templat
 
 	public function action_profile() {
 
-		if (Auth_ORM::instance()->logged_in() === false) {
+		if (Auth::instance()->logged_in() === false) {
 			$this->request->redirect(Route::get('authormfrontend_login')->uri(array('redirect_path' => Route::get('authormfrontend_profile')->uri())));
 		}
 
 		$view = View::factory('profile');
 
-		$auth = Auth_ORM::instance();
+		$auth = Auth::instance();
 		/* @var $user Model_User */
 		$user = $auth->get_user();
 
@@ -54,7 +54,7 @@ class AuthOrmFrontend_Core_Controller_AuthOrmFrontend extends Controller_Templat
 			$success = $form->submit();
 			if ($success) {
 				$view->form_success = true;
-				$this->template->user = Auth_ORM::instance()->get_user();
+				$this->template->user = Auth::instance()->get_user();
 			} else {
 				$view->form_success = false;
 			}
