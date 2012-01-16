@@ -7,6 +7,7 @@ class AuthOrmFrontend_Core_Form_Login extends FormManager {
 		$this->add_field('password', array('display_as' => 'password'));
 		$this->rule('username', 'not_empty');
 		$this->rule('password', 'not_empty');
+		$this->submit_text = 'Login';
 	}
 	
 	public function submit() {
