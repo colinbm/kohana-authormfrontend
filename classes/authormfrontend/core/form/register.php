@@ -3,6 +3,7 @@
 class AuthOrmFrontend_Core_Form_Register extends Form_User {
 	
 	protected function setup() {
+		parent::setup();
 		$this->rule('password', 'not_empty');
 	}
 	
