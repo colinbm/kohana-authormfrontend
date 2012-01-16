@@ -4,7 +4,7 @@
 
 <?php elseif (isset($form_success) and $form_success == false): ?>
 
-	<div class="alert-message error">Your profile could not be updated. Please check for errors below.</div>
+	<div class="alert-message error">Your details were incomplete. Please check for errors below.</div>
 	<?php echo $form->render(); ?>
 
 <?php else: ?>
