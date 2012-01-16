@@ -1,3 +1,6 @@
-Provides basic views and controllers for the Kohana for Auth_ORM.
+Kohana AuthOrmFrontend
+======================
+
+This module provides a controller for login/logout/register/profile and the associated views.
 
 Requires https://github.com/colinbm/kohana-formmanager
