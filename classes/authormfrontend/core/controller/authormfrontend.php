@@ -9,12 +9,16 @@ class AuthOrmFrontend_Core_Controller_AuthOrmFrontend extends Controller_Templat
 		$view = View::factory('login');
 
 		if ($form->is_submitted()) {
-			$success = $form->submit();
-			if ($success) {
+			if ($form->submit()) {
+				Flash::success(__('You are now logged in.'));
 				if ($this->request->param('redirect_path')) {
 					$this->request->redirect($this->request->param('redirect_path'));
+				} else {
+					$this->request->redirect(Route::get('default')->uri());
 				}
 				$this->template->user = Auth::instance()->get_user();
+			} else {
+				Flash::error(__('Your username or password were not recognised.'));
 			}
 		}
 
@@ -27,12 +31,9 @@ class AuthOrmFrontend_Core_Controller_AuthOrmFrontend extends Controller_Templat
 	public function action_logout() {
 
 		$auth = Auth::instance();
-		$auth->logout(true, true);
-
-		$this->template->title = I18n::get('Logout');
-		$view = View::factory('logout');
-		$this->template->content = $view->render();
-		$this->template->user = false;
+		$auth->logout(false, true);
+		Flash::success(__('You have successfully logged out.'));
+		$this->request->redirect(Route::get('default')->uri());
 
 	}
 
@@ -51,12 +52,11 @@ class AuthOrmFrontend_Core_Controller_AuthOrmFrontend extends Controller_Templat
 		$form = new Form_Profile($user->id);
 
 		if ($form->is_submitted()) {
-			$success = $form->submit();
-			if ($success) {
-				$view->form_success = true;
+			if ($form->submit()) {
+				Flash::success(__('Your profile has been successfully updated.'));
 				$this->template->user = Auth::instance()->get_user();
 			} else {
-				$view->form_success = false;
+				Flash::error(__('Your profile could not be updated. Please check for errors below.'));
 			}
 		}
 
@@ -73,16 +73,16 @@ class AuthOrmFrontend_Core_Controller_AuthOrmFrontend extends Controller_Templat
 		$form = new Form_Register();
 
 		if ($form->is_submitted()) {
-			$success = $form->submit();
-			if ($user = $success) {
-				$view->form_success = true;
+			if ($user = $form->submit()) {
+				Flash::success(__('You have successfully registered.'));
 				$auth = Auth::instance();
 				$values = $form->get_input();
 				if (($auth->login($values['username'], $values['password']))) {
 					$this->template->user = $auth->get_user();
 				}
+				$this->request->redirect(Route::get('default')->uri());
 			} else {
-				$view->form_success = false;
+				Flash::error(__('Your details were incomplete. Please check for errors below.'));
 			}
 		}
 

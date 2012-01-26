@@ -1,6 +1,6 @@
 <?php
 
-Route::set('authormfrontend_login', 'login(/<redirect_path>)')
+Route::set('authormfrontend_login', 'login(/<redirect_path>)', array('redirect_path' => '.*'))
 	->defaults(array(
 		'controller' => 'authormfrontend',
 		'action'     => 'login',
