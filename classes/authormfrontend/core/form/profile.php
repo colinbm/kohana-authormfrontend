@@ -5,6 +5,8 @@ class AuthOrmFrontend_Core_Form_Profile extends Form_User {
 	protected function setup() {
 		parent::setup();
 		$this->remove_field('username');
+		$this->set_field_value('password', 'help', 'Leave blank unless changing.');
+		
 	}
 	
 	public function submit() {
