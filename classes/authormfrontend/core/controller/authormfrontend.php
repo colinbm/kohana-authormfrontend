@@ -6,7 +6,7 @@ class AuthOrmFrontend_Core_Controller_AuthOrmFrontend extends Controller_Templat
 
 		$form = new Form_Login();
 
-		$view = View::factory('login');
+		$view = View::factory('authormfrontend/login');
 
 		if ($form->is_submitted()) {
 			if ($form->submit()) {
@@ -43,7 +43,7 @@ class AuthOrmFrontend_Core_Controller_AuthOrmFrontend extends Controller_Templat
 			$this->request->redirect(Route::get('authormfrontend_login')->uri(array('redirect_path' => Route::get('authormfrontend_profile')->uri())));
 		}
 
-		$view = View::factory('profile');
+		$view = View::factory('authormfrontend/profile');
 
 		$auth = Auth::instance();
 		/* @var $user Model_User */
@@ -68,7 +68,7 @@ class AuthOrmFrontend_Core_Controller_AuthOrmFrontend extends Controller_Templat
 
 	public function action_register() {
 
-		$view = View::factory('register');
+		$view = View::factory('authormfrontend/register');
 
 		$form = new Form_Register();
 
@@ -91,5 +91,52 @@ class AuthOrmFrontend_Core_Controller_AuthOrmFrontend extends Controller_Templat
 		$this->template->content = $view->render();
 
 	}
+	
+	public function action_forgot() {
+		
+		$view = View::factory('authormfrontend/forgot');
+		
+		$form = new Form_Forgot();
+		
+		if ($form->is_submitted()) {
+			if ($form->submit()) {
+				Flash::info("Please check your email for further instructions on resetting your password.");
+				$this->request->redirect(Route::url('default'));
+			} else {
+				Flash::error('No user found with that username.');
+			}
+		}
+		
+		$view->form = $form;
+		
+		$this->template->content = $view->render();
+		
+	}
+	
+	public function action_reset() {
+		
+		$view = View::factory('authormfrontend/reset');
+		
+		$form = new Form_Reset();
+		
+		if ($form->is_submitted()) {
+			if ($form->submit()) {
+				Flash::success("Your password has been reset. You may now login.");
+				$this->request->redirect(Route::url('authormfrontend_login'));
+			} else {
+				Flash::error("Your password could not be reset.");
+			}
+		}
+		
+		
+		$form->set_value('username', $this->request->param('username'));
+		$form->set_value('auth', $this->request->param('auth'));
+		
+		$view->form = $form;
+		
+		$this->template->content = $view->render();
+		
+	}
+	
 
 }

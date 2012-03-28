@@ -24,3 +24,15 @@ Route::set('authormfrontend_register', 'register')
 		'controller' => 'authormfrontend',
 		'action'     => 'register',
 ));
+
+Route::set('authormfrontend_forgot', 'reset-password')
+	->defaults(array(
+		'controller' => 'authormfrontend',
+		'action'     => 'forgot',
+));
+
+Route::set('authormfrontend_reset', 'reset-password/<username>/<auth>')
+	->defaults(array(
+		'controller' => 'authormfrontend',
+		'action'     => 'reset',
+));
