@@ -22,6 +22,9 @@ class AuthOrmFrontend_Core_Form_User extends FormManager {
 		$success = parent::submit();
 		
 		if ($success) {
+			if ($this->get_input('password') == '') {
+				unset($this->object->password);
+			}
 			$this->save_object();
 		}
 		return $success;
