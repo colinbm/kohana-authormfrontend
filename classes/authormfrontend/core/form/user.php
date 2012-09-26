@@ -20,10 +20,14 @@ class AuthOrmFrontend_Core_Form_User extends FormManager {
 	public function submit() {
 		
 		$success = parent::submit();
-		
 		if ($success) {
 			if ($this->get_input('password') == '') {
-				unset($this->object->password);
+				$input = $this->get_input();
+				unset($input['password']);
+				$this->object->reload();
+				foreach ($input as $k => $v) {
+					$this->set_value($k, $v);
+				}
 			}
 			$this->save_object();
 		}
